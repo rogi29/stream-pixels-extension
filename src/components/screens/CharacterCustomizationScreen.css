@@ -1,0 +1,17 @@
+.CharacterCustomizationScreen {
+    display: flex;
+    height: 100%;
+}
+
+.CharacterCustomizationScreen__inventory {
+    width: 30%;
+}
+
+.CharacterCustomizationScreen__equipment {
+    width: 40%;
+}
+
+.CharacterCustomizationScreen__equipment .Equipment {
+    width: 100%;
+    height: 100%;
+}
