@@ -1,8 +1,8 @@
 {
-  "name": "stream-pixel-extension",
+  "name": "stream-pixels-extension",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://rogi29.github.io/stream-pixel-extension",
+  "homepage": "https://rogi29.github.io/stream-pixels-extension",
   "dependencies": {
     "@react-three/drei": "^4.0.1",
     "@react-three/fiber": "^6.0.1",
