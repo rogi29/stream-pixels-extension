@@ -1,0 +1,5 @@
+.App {
+    height: 100vh;
+    background: linear-gradient(360deg, rgb(116 88 147 / 80%), rgb(246 218 255 / 80%));
+    backdrop-filter: blur(6px);
+}
