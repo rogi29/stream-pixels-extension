@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import { useUserDataContext } from 'components/contexts/UserDataContext';
 import { Item } from 'modals/Item';
 import { API_BASE_URL, API_TOKEN } from 'globals';
+import { useDummyQuery } from 'hooks/useDummyQuery';
 
 const defaultConfig = {
     method: 'GET',
@@ -16,8 +17,8 @@ const defaultConfig = {
 
 export const useGetItems = () => useSWR<Item[], Error>(useUserDataContext().id, getItems);
 
-export const useDummyGetItems = () => ({
-    error: undefined,
+export const useDummyGetItems = () => useDummyQuery<Item[], Error | null>({
+    error: null,
     data: [
         {
             id: '0',

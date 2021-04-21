@@ -1,7 +1,34 @@
-.Inventory {
+.Inventory {}
+
+.Inventory__tabs {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100%;
-    margin-left: 15%;
+    margin-bottom: 10px;
+}
+
+.Inventory__tabControl {
+    font-size: 36px;
+    color: #fff;
+    background: none;
+    border: none;
+    box-shadow: none;
+    opacity: 0.6;
+    transition: transform 0.1s;
+    cursor: pointer;
+}
+
+.Inventory__tabControl:focus {
+    outline: none;
+}
+
+.Inventory__tabControl:hover {
+    transform: scale(1.25);
+}
+
+.Inventory__tabControl:disabled {
+    opacity: 1;
+    cursor: initial;
+}
+
+.Inventory__tabControl:disabled:hover {
+    transform: none;
 }

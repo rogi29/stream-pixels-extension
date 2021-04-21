@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import { useUserDataContext } from 'components/contexts/UserDataContext';
 import { EquippedItems } from 'modals/EquippedItems';
 import { API_BASE_URL, API_TOKEN } from 'globals';
+import { useDummyQuery } from 'hooks/useDummyQuery';
 
 const defaultConfig = {
     method: 'GET',
@@ -16,24 +17,24 @@ const defaultConfig = {
 
 export const useGetEquippedItems = () => useSWR<EquippedItems, Error>(useUserDataContext().id, getEquippedItems);
 
-export const useDummyGetEquippedItems = () => ({
-    error: undefined,
+export const useDummyGetEquippedItems = () => useDummyQuery<Partial<EquippedItems>, Error | null>({
+    error: null,
     data: {
         outfit: {
-            id: '0',
+            id: '12515',
             name: 'witchOutfit',
             type: 'OUTFIT',
             quantity: 1,
             imageSrc: 'stream-pixels-extension/icons/WitchCraftIcons_31_t.png'
         },
         rightHand: {
-            id: '1',
+            id: '346643',
             name: 'witchKnife',
             type: 'HAND',
-            quantity: 2,
+            quantity: 1,
             imageSrc: 'stream-pixels-extension/icons/WitchCraftIcons_35_t.png'
         }
-    } as Partial<EquippedItems>
+    }
 });
 
 export const getURL = (userId: string): URL => new URL(`getEquippedItemsExampleUrl?userId=${userId}`, API_BASE_URL);

@@ -1,4 +1,6 @@
-export type ItemType = 'HAIR_STYLE' | 'HAIR_COLOR' | 'HAND' | 'OUTFIT' | 'GLASSES' | 'HAT' | 'CHIN' | 'EARS' | 'TAIL' | 'NECKLACE' | 'RING';
+export const itemTypeList = [ 'HAIR_STYLE', 'HAIR_COLOR', 'HAND', 'OUTFIT', 'GLASSES', 'HAT', 'CHIN', 'EARS', 'TAIL', 'NECKLACE', 'RING' ];
+
+export type ItemType = typeof itemTypeList[number];
 
 /**
  * Temporary Interface

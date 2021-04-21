@@ -1,0 +1,20 @@
+.MainLayout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.MainLayout > header {
+    width: 100%;
+    height: 135px;
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.MainLayout > main {
+    width: 100%;
+    max-width: 1333px;
+    margin: 0 auto;
+    padding: 0 5rem;
+    flex-grow: 1;
+}

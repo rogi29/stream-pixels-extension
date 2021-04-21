@@ -1,44 +1,54 @@
 import './Inventory.css';
-import ItemBox from "components/core/ItemBox";
-import Cell from "components/layouts/Cell";
-import Grid from "components/layouts/Grid";
-import { Item } from "modals/Item";
+import ScrollContainer from 'react-indiana-drag-scroll';
+import ItemGrid from 'components/layouts/ItemGrid';
+import { Item, ItemType, itemTypeList } from 'modals/Item';
+import ItemIcon from 'components/core/ItemIcon';
+import { ItemManagementContextType } from 'components/contexts/ItemManagementContext';
 
 const CLASS_NAME = 'Inventory';
-const ROWS = 4;
-const COLUMNS = 3;
-const ITEM_SIZE = 72;
-const ITEM_GAP = 6;
-const GRID_WIDTH = COLUMNS * ITEM_SIZE + (ITEM_GAP * (COLUMNS - 1));
 
 export interface InventoryProps {
     items: Item[];
+    currentItemType: ItemType;
+    filterByType: ItemManagementContextType['filterByType'];
+    equip: ItemManagementContextType['equip'];
 }
 
-const Inventory = ({ items }: InventoryProps) => {
-    const emptyItemsLen = (ROWS * COLUMNS) - items.length;
+const ITEM_SIZE = 72;
+const COLUMNS = 5;
+const ITEM_GAP = 10;
+const width = COLUMNS * ITEM_SIZE + (ITEM_GAP * (COLUMNS - 1));
 
+const Inventory = ({ items, currentItemType, filterByType, equip }: InventoryProps) => {
     return (
         <div className={CLASS_NAME}>
-            <Grid
-                width={`${GRID_WIDTH}px`}
-                gap={`${ITEM_GAP}px`}
-                columnsWidth={`${ITEM_SIZE}px`}
-                rowsHeight={`${ITEM_SIZE}px`}
-                rows={ROWS}
+            <ScrollContainer vertical={false} className={`${CLASS_NAME}__tabs`} style={{ width: `${width}px` }}>
+                <button
+                    title="All items"
+                    className={`${CLASS_NAME}__tabControl`}
+                    onClick={() => filterByType('ALL')}
+                    disabled={currentItemType === 'ALL'}
+                    children={<i className="icon icon-menu" />}
+                />
+                {itemTypeList.map(itemType => (
+                    <button
+                        key={itemType}
+                        title={itemType.replace('_', ' ').toLowerCase()}
+                        className={`${CLASS_NAME}__tabControl`}
+                        onClick={() => filterByType(itemType)}
+                        disabled={currentItemType === itemType}
+                        children={<ItemIcon itemType={itemType} />}
+                    />
+                ))}
+            </ScrollContainer>
+            <ItemGrid
+                items={items}
                 columns={COLUMNS}
-            >
-                {(items || []).map(item => (
-                    <Cell>
-                        <ItemBox {...item} />
-                    </Cell>
-                ))}
-                {Array.from({ length: emptyItemsLen }).map(() => (
-                    <Cell>
-                        <ItemBox isPlaceholder={true} />
-                    </Cell>
-                ))}
-            </Grid>
+                itemSize={ITEM_SIZE}
+                gap={ITEM_GAP}
+                width={width}
+                handleItemDoubleClick={equip}
+            />
         </div>
     );
 };
