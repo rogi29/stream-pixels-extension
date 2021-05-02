@@ -5,7 +5,7 @@
 import useSWR from 'swr';
 import { useUserDataContext } from 'components/contexts/UserDataContext';
 import { Item } from 'modals/Item';
-import { API_BASE_URL, API_TOKEN } from 'globals';
+import { API_BASE_URL, API_TOKEN } from 'config/globals';
 import { useDummyQuery } from 'hooks/useDummyQuery';
 
 const defaultConfig = {
@@ -25,14 +25,14 @@ export const useDummyGetItems = () => useDummyQuery<Item[], Error | null>({
             name: 'witchHat',
             type: 'HAT',
             quantity: 1,
-            imageSrc: 'stream-pixels-extension/icons/WitchCraftIcons_76_t.png'
+            imageSrc: 'icons/WitchCraftIcons_76_t.png'
         },
         {
             id: '1',
             name: 'fancySword',
             type: 'HAND',
             quantity: 2,
-            imageSrc: 'stream-pixels-extension/icons/WitchCraftIcons_34_t.PNG'
+            imageSrc: 'icons/WitchCraftIcons_34_t.PNG'
         }
     ]
 });

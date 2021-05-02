@@ -5,7 +5,7 @@
 import useSWR from 'swr';
 import { useUserDataContext } from 'components/contexts/UserDataContext';
 import { EquippedItems } from 'modals/EquippedItems';
-import { API_BASE_URL, API_TOKEN } from 'globals';
+import { API_BASE_URL, API_TOKEN } from 'config/globals';
 import { useDummyQuery } from 'hooks/useDummyQuery';
 
 const defaultConfig = {
@@ -25,14 +25,14 @@ export const useDummyGetEquippedItems = () => useDummyQuery<Partial<EquippedItem
             name: 'witchOutfit',
             type: 'OUTFIT',
             quantity: 1,
-            imageSrc: 'stream-pixels-extension/icons/WitchCraftIcons_31_t.png'
+            imageSrc: 'icons/WitchCraftIcons_31_t.png'
         },
         rightHand: {
             id: '346643',
             name: 'witchKnife',
             type: 'HAND',
             quantity: 1,
-            imageSrc: 'stream-pixels-extension/icons/WitchCraftIcons_35_t.png'
+            imageSrc: 'icons/WitchCraftIcons_35_t.png'
         }
     }
 });

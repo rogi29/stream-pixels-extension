@@ -21,7 +21,7 @@ type GLTFResult = GLTF & {
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
     const group = useRef<THREE.Group>()
-    const { nodes, materials } = useGLTF('stream-pixels-extension/objects/Character.glb') as GLTFResult
+    const { nodes, materials } = useGLTF('objects/Character.glb') as GLTFResult
     return (
         <group ref={group} {...props} dispose={null}>
             <group>
@@ -137,4 +137,4 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
     )
 };
 
-useGLTF.preload('stream-pixels-extension/objects/Character.glb')
+useGLTF.preload('objects/Character.glb')

@@ -13,10 +13,11 @@ type DropHandlerArgs = [string, ItemType, Item | undefined];
 
 export interface EquipmentProps {
     equippedItems: Partial<EquippedItems>;
-    store: ItemManagementContextType['store'];
+    filterByType?: ItemManagementContextType['filterByType'];
+    store?: ItemManagementContextType['store'];
 }
 
-const Equipment = ({ equippedItems, store = () => {} }: EquipmentProps) => {
+const Equipment = ({ equippedItems, filterByType = () => {}, store = () => {} }: EquipmentProps) => {
     const startSectionList: DropHandlerArgs[] = [
         [ 'hairStyle', 'HAIR_STYLE', equippedItems.hairStyle ],
         [ 'hat', 'HAT', equippedItems.hat ],
@@ -41,9 +42,9 @@ const Equipment = ({ equippedItems, store = () => {} }: EquipmentProps) => {
                 {startSectionList.map(([name, type, item], index) => (
                     <Slot key={type} title={type.replace('_', ' ').toLowerCase()}>
                         {item ? (
-                            <ItemCell {...item} onDoubleClick={() => store(name as EquippedSlots, item)} />
+                            <ItemCell {...item} onClick={() => filterByType(type)} onDoubleClick={() => store(name as EquippedSlots, item)} />
                         ) : (
-                            <ItemIcon itemType={type} />
+                            <ItemIcon itemType={type} onClick={() => filterByType(type)} />
                         )}
                     </Slot>
                 ))}
@@ -55,9 +56,9 @@ const Equipment = ({ equippedItems, store = () => {} }: EquipmentProps) => {
                 {lastSectionList.map(([name, type, item], index) => (
                     <Slot key={type} title={type.replace('_', ' ').toLowerCase()}>
                         {item ? (
-                            <ItemCell {...item} onDoubleClick={() => store(name as EquippedSlots, item)} />
+                            <ItemCell {...item} onClick={() => filterByType(type)} onDoubleClick={() => store(name as EquippedSlots, item)} />
                         ) : (
-                            <ItemIcon itemType={type} />
+                            <ItemIcon itemType={type} onClick={() => filterByType(type)} />
                         )}
                     </Slot>
                 ))}

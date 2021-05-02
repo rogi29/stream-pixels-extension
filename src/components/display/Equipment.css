@@ -39,4 +39,5 @@
 .Equipment .ItemIcon {
     font-size: 36px;
     opacity: 0.5;
+    cursor: pointer;
 }

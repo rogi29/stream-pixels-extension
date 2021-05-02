@@ -25,7 +25,11 @@ const CharacterCustomizationScreen = () => (
                             />
                         </div>
                         <div className={`${CLASS_NAME}__equipment`}>
-                            <Equipment equippedItems={equippedItems} store={store} />
+                            <Equipment
+                                equippedItems={equippedItems}
+                                filterByType={filterByType}
+                                store={store}
+                            />
                         </div>
                     </div>
                 )}
