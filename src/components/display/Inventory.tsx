@@ -14,15 +14,15 @@ export interface InventoryProps {
     equip: ItemManagementContextType['equip'];
 }
 
-const ITEM_SIZE = 72;
+const ITEM_SIZE = '4.5rem';
 const COLUMNS = 5;
-const ITEM_GAP = 10;
-const width = COLUMNS * ITEM_SIZE + (ITEM_GAP * (COLUMNS - 1));
+const ITEM_GAP = '10px';
+const width = `calc(${COLUMNS} * ${ITEM_SIZE} + (${ITEM_GAP} * (${COLUMNS} - 1)))`;
 
 const Inventory = ({ items, currentItemType, filterByType, equip }: InventoryProps) => {
     return (
         <div className={CLASS_NAME}>
-            <ScrollContainer vertical={false} className={`${CLASS_NAME}__tabs`} style={{ width: `${width}px` }}>
+            <ScrollContainer vertical={false} className={`${CLASS_NAME}__tabs`} style={{ width }}>
                 <button
                     title="All items"
                     className={`${CLASS_NAME}__tabControl`}

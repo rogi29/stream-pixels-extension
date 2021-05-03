@@ -1,3 +1,5 @@
+import './CharacterScene.css';
+
 import { Canvas } from '@react-three/fiber';
 import { Euler } from 'three';
 

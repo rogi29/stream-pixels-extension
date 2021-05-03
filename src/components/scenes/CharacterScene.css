@@ -1,0 +1,5 @@
+.CharacterScene canvas {
+    width: auto !important;
+    height: 80vh !important;
+    margin: 0 auto;
+}
