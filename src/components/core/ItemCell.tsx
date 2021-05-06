@@ -1,34 +1,43 @@
 import './ItemCell.css';
+import { useDrag } from 'react-dnd';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import useDoubleClick from 'use-double-click';
 import { Item } from 'modals/Item';
-import { useRef } from 'react';
 
 const CLASS_NAME = 'ItemCell';
 
 export interface ItemCellProps extends Partial<Item> {
     onClick?: (e: any) => void;
-    onDoubleClick?: (e: any) => void;
+    onDrag?: (e: any) => void;
 }
 
 const ItemCell = ({
-    name,
-    quantity,
-    imageSrc,
-    onClick: onSingleClick = () => {},
-    onDoubleClick = () => {}
+    onClick = () => {},
+    onDrag = () => {},
+    ...item
 }: ItemCellProps) => {
-    const ref = useRef<HTMLDivElement>(null);
+    const {
+        name,
+        quantity,
+        type,
+        imageSrc,
+    } = item;
     
-    useDoubleClick<HTMLDivElement>({
-        ref,
-        latency: 250,
-        onSingleClick,
-        onDoubleClick,
-    });
+    const [ collected, dragRef, dragPreviewRef ] = useDrag(() => ({
+        type: type || 'NONE',
+        item: item,
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging()
+        })
+    }))
+
+    if ((collected as any)?.isDragging) {
+        return (
+            <div ref={dragPreviewRef} />
+        );
+    }
 
     return (
-        <div ref={ref} className={CLASS_NAME} title={name}>
+        <div ref={dragRef} className={CLASS_NAME} title={name} onClick={onClick} {...collected}>
             <div className={`${CLASS_NAME}__inner`}>
                 <LazyLoadImage
                     className={`${CLASS_NAME}__img`}

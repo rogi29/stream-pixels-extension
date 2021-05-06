@@ -11,12 +11,8 @@ export interface ItemManagementContextType {
     currentItemType: ItemFilterType;
     equippedItems: Partial<EquippedItems>;
     filterByType: ( itemType: ItemFilterType ) => void;
-    equip?: (item: Item) => void;
-    store?: (name: EquippedSlots, item: Item) => void;
-}
-
-export interface ItemManagementProviderProps {
-    children: (props: ItemManagementContextType) => ReactNode;
+    equip?: (name: string, item: Item) => void;
+    store?: (item: Item) => void;
 }
 
 export const ItemManagementContext = createContext<ItemManagementContextType>({
@@ -38,7 +34,7 @@ export const useItemManagementContext = () => {
     return context;
 };
 
-export const ItemManagementProvider: React.FunctionComponent<ItemManagementProviderProps> = ({ children }) => {
+export const ItemManagementProvider: React.FunctionComponent<{}> = ({ children }) => {
     const { mutate: mutateItems, error: itemsError, data: items } = useDummyGetItems();
     const { mutate: mutateEquippedItems, error: equippedItemsError, data: equippedItems = {} } = useDummyGetEquippedItems();
     const [ currentItemType, setCurrentItemType ] = useState<ItemFilterType>('ALL');
@@ -48,45 +44,61 @@ export const ItemManagementProvider: React.FunctionComponent<ItemManagementProvi
         setCurrentItemType(itemType);
     };
 
-    const store = (name: EquippedSlots, item: Item) => {
-        if (equippedItems.hasOwnProperty(name)) {
-            removeFromEquipment(name);
-            addToStore(item);
-        }
-    };
-
-    const equip = (item: Item) => {
-        if (addToEquipment(item)) {
-            removeFromStore(item);
-        }
-    };
-
-    const addToEquipment = (item: Item): boolean => {
-        const name = Object.values(EquippedSlots).find(name => equipmentSlotTypeMap[name] === item.type && !equippedItems[name]);
-
-        if (name) {
-            mutateEquippedItems({
-                ...equippedItems,
-                [name]: {
-                    ...item,
-                    quantity: 1
-                }
+    const store = (item: Item) => {
+        removeFromEquipment(item, () => {
+            window.setTimeout(() => {
+                addToStore(item);
             });
-            return true;
-        }
-
-        return false;
+        });
     };
 
-    const removeFromEquipment = (name: keyof EquippedItems) => {
-        const cloned = {...equippedItems};
-        delete cloned[name];
-        mutateEquippedItems(cloned);
+    const equip = (name: string, item: Item) => {
+        addToEquipment(name, item, () => {
+            window.setTimeout(() => {
+                removeFromStore(item);
+            });
+        });
+    };
+
+    const addToEquipment = (name: string, item: Item, callback: () => void) => {
+        mutateEquippedItems((equippedItems = {}) => {
+            const values: (Item | undefined)[] = Object.values(equippedItems);
+            const isEquipped = values.some((currItem) => currItem && currItem.id === item.id);
+    
+            if (name && !isEquipped) {
+                equippedItems = {
+                    ...equippedItems,
+                    [name]: {
+                        ...item,
+                        quantity: 1
+                    }
+                };
+
+                callback();
+            }
+
+            return equippedItems;
+        });
+    };
+
+    const removeFromEquipment = (item: Item, callback: () => void) => {
+        mutateEquippedItems(({ ...cloned }) => {
+            const keys = Object.keys(cloned);
+            const items: (Item | undefined)[] = Object.values(cloned);
+            const index = items.findIndex((currItem) => currItem && currItem.id === item.id);
+            
+            if (index > -1) {
+                const name = keys[index] as keyof EquippedItems;
+                delete cloned[name];
+                callback();
+            }
+
+            return cloned;
+        });
     };
 
     const addToStore = (item: Item) => {
-        if (items && item) {
-            let cloned = [ ...items ];
+        mutateItems(([ ...cloned ] = []) => {
             const index = cloned.findIndex(currItem => item.id === currItem.id);
 
             if (index > -1) {
@@ -98,29 +110,29 @@ export const ItemManagementProvider: React.FunctionComponent<ItemManagementProvi
                 cloned.push(item);
             }
 
-            mutateItems(cloned);
-        }
+            return cloned;
+        });
     };
 
     const removeFromStore = (item: Item) => {
-        const index = items?.findIndex(({ id }) => id === item.id);
+        mutateItems(([ ...cloned ] = []) => {
+            const index = cloned?.findIndex(({ id }) => id === item.id);
 
-        if (typeof index === 'number' && items) {
-            let cloned = [ ...items ];
+            if (index > -1 && cloned) {
+                if (cloned[index].quantity > 0) {
+                    cloned[index] = {
+                        ...item,
+                        quantity: item.quantity - 1
+                    };
+                }
+        
+                if (cloned[index].quantity < 1) {
+                    cloned = cloned.filter((_, currIndex) => currIndex !== index);
+                }
+            }
 
-            if (cloned[index].quantity > 0) {
-                cloned[index] = {
-                    ...item,
-                    quantity: item.quantity - 1
-                };
-            }
-    
-            if (cloned[index].quantity < 1) {
-                cloned = cloned.filter((_, currIndex) => currIndex !== index);
-            }
-    
-            mutateItems(cloned);
-        }
+            return cloned;
+        });
     };
 
     useEffect(() => {
@@ -144,7 +156,7 @@ export const ItemManagementProvider: React.FunctionComponent<ItemManagementProvi
 
     return (
         <ItemManagementContext.Provider value={contextValue}>
-            {children(contextValue)}
+            {children}
         </ItemManagementContext.Provider>
     );
 };

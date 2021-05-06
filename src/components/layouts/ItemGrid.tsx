@@ -1,8 +1,9 @@
 import Cell from "components/layouts/Cell";
 import Grid from "components/layouts/Grid";
-import { Item } from "modals/Item";
 import Slot from 'components/core/Slot';
 import ItemCell from 'components/core/ItemCell';
+import { useItemManagementContext } from "components/contexts/ItemManagementContext";
+import { Item, ItemType, itemTypeList } from "modals/Item";
 
 export interface ItemGridProps {
     rows?: number;
@@ -11,7 +12,8 @@ export interface ItemGridProps {
     gap?: string;
     width?: string;
     items: Item[];
-    handleItemDoubleClick?: (item: Item) => void;
+    onDrop?: (...props: any) => any;
+    onDrag?: (...props: any) => any;
 }
 
 const ItemGrid = ({
@@ -21,9 +23,12 @@ const ItemGrid = ({
     itemSize = '72px',
     gap = '10px',
     width = `calc(${columns} * ${itemSize} + (${gap} * (${columns} - 1)))`,
-    handleItemDoubleClick = () => {}
+    onDrop = () => {},
+    onDrag = () => {}
 }: ItemGridProps) => {
     const numOfEmptyItems = (rows * columns) - items.length;
+    const { currentItemType } = useItemManagementContext();
+    const type = currentItemType === 'ALL' ? [ ...itemTypeList ] : currentItemType;
 
     return (
         <Grid
@@ -37,13 +42,13 @@ const ItemGrid = ({
             {items.map((item, index) => (
                 <Cell key={item.id}>
                     <Slot>
-                        <ItemCell {...item} onDoubleClick={() => handleItemDoubleClick(item)} />
+                        <ItemCell {...item} onDrag={onDrag} />
                     </Slot>
                 </Cell>
             ))}
             {Array.from({ length: numOfEmptyItems }).map((_, i) => (
-                <Cell key={i}>
-                    <Slot />
+                <Cell key={`${type}_${i}`}>
+                    <Slot type={type} onDrop={onDrop} />
                 </Cell>
             ))}
         </Grid>

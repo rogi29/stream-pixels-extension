@@ -14,25 +14,14 @@ const CharacterCustomizationScreen = () => (
     <DndProvider backend={HTML5Backend}>
         <MainLayout>
             <ItemManagementProvider>
-                {({ storedItemList, currentItemType, equippedItems, filterByType, equip, store }) => (
-                    <div className={CLASS_NAME}>
-                        <div className={`${CLASS_NAME}__inventory`}>
-                            <Inventory
-                                items={storedItemList}
-                                currentItemType={currentItemType}
-                                filterByType={filterByType}
-                                equip={equip}
-                            />
-                        </div>
-                        <div className={`${CLASS_NAME}__equipment`}>
-                            <Equipment
-                                equippedItems={equippedItems}
-                                filterByType={filterByType}
-                                store={store}
-                            />
-                        </div>
+                <div className={CLASS_NAME}>
+                    <div className={`${CLASS_NAME}__inventory`}>
+                        <Inventory />
                     </div>
-                )}
+                    <div className={`${CLASS_NAME}__equipment`}>
+                        <Equipment />
+                    </div>
+                </div>
             </ItemManagementProvider>
         </MainLayout>
     </DndProvider>

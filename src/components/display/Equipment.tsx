@@ -1,23 +1,18 @@
 import './Equipment.css';
 import CharacterScene from "components/scenes/CharacterScene";
-import { EquippedItems, EquippedSlots } from "modals/EquippedItems";
 import { Item, ItemType } from 'modals/Item';
 import Slot from 'components/core/Slot';
 import ItemIcon from 'components/core/ItemIcon';
 import ItemCell from 'components/core/ItemCell';
-import { ItemManagementContextType } from 'components/contexts/ItemManagementContext';
+import { useItemManagementContext } from 'components/contexts/ItemManagementContext';
 
 const CLASS_NAME = 'Equipment';
 
 type DropHandlerArgs = [string, ItemType, Item | undefined];
 
-export interface EquipmentProps {
-    equippedItems: Partial<EquippedItems>;
-    filterByType?: ItemManagementContextType['filterByType'];
-    store?: ItemManagementContextType['store'];
-}
+const Equipment = () => {
+    const { equippedItems, filterByType, equip = () => {} } = useItemManagementContext();
 
-const Equipment = ({ equippedItems, filterByType = () => {}, store = () => {} }: EquipmentProps) => {
     const startSectionList: DropHandlerArgs[] = [
         [ 'hairStyle', 'HAIR_STYLE', equippedItems.hairStyle ],
         [ 'hat', 'HAT', equippedItems.hat ],
@@ -40,9 +35,9 @@ const Equipment = ({ equippedItems, filterByType = () => {}, store = () => {} }:
         <div className={CLASS_NAME}>
             <div className={`${CLASS_NAME}__startSection`}>
                 {startSectionList.map(([name, type, item], index) => (
-                    <Slot key={type} title={type.replace('_', ' ').toLowerCase()}>
+                    <Slot key={type} title={type.replace('_', ' ').toLowerCase()} type={type} onDrop={item => { equip(name, item) }}>
                         {item ? (
-                            <ItemCell {...item} onClick={() => filterByType(type)} onDoubleClick={() => store(name as EquippedSlots, item)} />
+                            <ItemCell {...item} onClick={() => filterByType(type)} />
                         ) : (
                             <ItemIcon itemType={type} onClick={() => filterByType(type)} />
                         )}
@@ -54,9 +49,9 @@ const Equipment = ({ equippedItems, filterByType = () => {}, store = () => {} }:
 
             <div className={`${CLASS_NAME}__endSection`}>
                 {lastSectionList.map(([name, type, item], index) => (
-                    <Slot key={type} title={type.replace('_', ' ').toLowerCase()}>
+                    <Slot key={type} title={type.replace('_', ' ').toLowerCase()} type={type} onDrop={item => { equip(name, item) }}>
                         {item ? (
-                            <ItemCell {...item} onClick={() => filterByType(type)} onDoubleClick={() => store(name as EquippedSlots, item)} />
+                            <ItemCell {...item} onClick={() => filterByType(type)} />
                         ) : (
                             <ItemIcon itemType={type} onClick={() => filterByType(type)} />
                         )}

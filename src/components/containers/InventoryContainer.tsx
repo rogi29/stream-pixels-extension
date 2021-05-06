@@ -1,7 +1,5 @@
 import { ReactElement } from 'react';
-import { useDummyGetItems, useGetItems } from 'queries/getItems';
 import { Item } from 'modals/Item';
-import { InventoryProps } from 'components/display/Inventory';
 import { useLocalStorage } from 'hooks/useLocalStorage';
 
 const INVENTORY_GRID_KEY = 'INVENTORY_GRID_KEY';

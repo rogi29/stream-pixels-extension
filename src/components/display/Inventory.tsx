@@ -1,25 +1,19 @@
 import './Inventory.css';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import ItemGrid from 'components/layouts/ItemGrid';
-import { Item, ItemType, itemTypeList } from 'modals/Item';
+import { Item, itemTypeList } from 'modals/Item';
 import ItemIcon from 'components/core/ItemIcon';
-import { ItemManagementContextType } from 'components/contexts/ItemManagementContext';
+import {  useItemManagementContext } from 'components/contexts/ItemManagementContext';
 
 const CLASS_NAME = 'Inventory';
-
-export interface InventoryProps {
-    items: Item[];
-    currentItemType: ItemType;
-    filterByType: ItemManagementContextType['filterByType'];
-    equip: ItemManagementContextType['equip'];
-}
-
 const ITEM_SIZE = '4.5rem';
 const COLUMNS = 5;
 const ITEM_GAP = '10px';
 const width = `calc(${COLUMNS} * ${ITEM_SIZE} + (${ITEM_GAP} * (${COLUMNS} - 1)))`;
 
-const Inventory = ({ items, currentItemType, filterByType, equip }: InventoryProps) => {
+const Inventory = () => {
+    const { storedItemList, currentItemType, filterByType, store } = useItemManagementContext();
+    
     return (
         <div className={CLASS_NAME}>
             <ScrollContainer vertical={false} className={`${CLASS_NAME}__tabs`} style={{ width }}>
@@ -42,12 +36,12 @@ const Inventory = ({ items, currentItemType, filterByType, equip }: InventoryPro
                 ))}
             </ScrollContainer>
             <ItemGrid
-                items={items}
+                items={storedItemList}
                 columns={COLUMNS}
                 itemSize={ITEM_SIZE}
                 gap={ITEM_GAP}
                 width={width}
-                handleItemDoubleClick={equip}
+                onDrop={store}
             />
         </div>
     );

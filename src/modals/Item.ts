@@ -1,4 +1,4 @@
-export const itemTypeList = [ 'HAIR_STYLE', 'HAIR_COLOR', 'HAND', 'OUTFIT', 'GLASSES', 'HAT', 'CHIN', 'EARS', 'TAIL', 'NECKLACE', 'RING' ];
+export const itemTypeList = [ 'NONE', 'HAIR_STYLE', 'HAIR_COLOR', 'HAND', 'OUTFIT', 'GLASSES', 'HAT', 'CHIN', 'EARS', 'TAIL', 'NECKLACE', 'RING' ] as const;
 
 export type ItemType = typeof itemTypeList[number];
 
