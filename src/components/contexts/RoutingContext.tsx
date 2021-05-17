@@ -13,7 +13,7 @@ export interface RoutingContextType {
 }
 
 export const RoutingContext = createContext<RoutingContextType>({
-    currentRoute: Routes.INVENTORY,
+    currentRoute: Routes.STREAM,
     goTo: () => {},
     renderRoute: () => null
 });
@@ -29,7 +29,7 @@ export const useRoutingContext = () => {
 };
 
 export const RoutingProvider: React.FunctionComponent<RouteingProviderProps> = ({ children }) => {
-    const [ currentRoute, setCurrentRoute ] = useState<Routes>(Routes.INVENTORY);
+    const [ currentRoute, setCurrentRoute ] = useState<Routes>(Routes.STREAM);
 
     const goTo = (route: Routes) => {
         setCurrentRoute(route);

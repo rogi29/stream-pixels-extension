@@ -1,0 +1,7 @@
+.DivineBountyScreen {
+    display: flex;
+    height: 100%;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+}

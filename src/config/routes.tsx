@@ -1,8 +1,14 @@
 import { Routes } from 'modals/Route';
-import CharacterCustomizationScreen from 'components/screens/CharacterCustomizationScreen';
 import MainLayout from 'components/layouts/MainLayout';
+import CharacterCustomizationScreen from 'components/screens/CharacterCustomizationScreen';
+import DivineBountyScreen from 'components/screens/DivineBountyScreen';
+import StreamScreen from 'components/screens/StreamScreen';
 
 export default [
+    {
+        route: Routes.STREAM,
+        render: () => <StreamScreen />
+    },
     {
         hide: true,
         route: Routes.CHARACTER_CREATION,
@@ -22,6 +28,6 @@ export default [
     },
     {
         route: Routes.DIVINE_BOUNTY,
-        render: () => <MainLayout><span>DIVINE BOUNTY</span></MainLayout>
+        render: () => <DivineBountyScreen />
     }
 ];

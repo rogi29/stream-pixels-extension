@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 export enum Routes {
+    STREAM,
     CHARACTER_CREATION,
     INVENTORY,
     PLAYER_STATS,
